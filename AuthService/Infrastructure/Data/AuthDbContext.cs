@@ -3,6 +3,8 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Data;
 
 namespace Infrastructure.Data;
 
@@ -64,5 +66,10 @@ public class AuthDbContext(DbContextOptions<AuthDbContext> options) : IdentityDb
             await transaction.RollbackAsync(cancellationToken);
 
         }
+    }
+
+    public IDbTransaction BeginTransaction()
+    {
+        return Database.BeginTransaction().GetDbTransaction();
     }
 }

@@ -1,5 +1,6 @@
 using Application.Common;
 using Core;
+using Domain.Abstraction;
 using Domain.Entities;
 using Domain.RepositoryInterfaces;
 using MediatR;
@@ -10,13 +11,15 @@ namespace Application.Login;
 public sealed class LoginRequestHandler(
     UserManager<User> userManager,
     IJwtTokenRepository jwtTokenRepository,
-    IRefreshTokenRepository refreshTokenRepository
+    IRefreshTokenRepository refreshTokenRepository,
+    IUnitOfWork unitOfWork
     )
     : IRequestHandler<LoginRequest, Result<LoginResponse>>
 {
     private readonly UserManager<User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     private readonly IJwtTokenRepository _jwtTokenRepository = jwtTokenRepository ?? throw new ArgumentNullException(nameof(jwtTokenRepository));
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));
+    private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
     public async Task<Result<LoginResponse>> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
@@ -28,7 +31,10 @@ public sealed class LoginRequestHandler(
 
         var roles = await _userManager.GetRolesAsync(user);
         var accessToken = await _jwtTokenRepository.GenerateTokenAsync(user, roles);
-        var refreshToken = await _refreshTokenRepository.CreateAsync(user.Id, cancellationToken);
+        var refreshToken = Domain.Entities.RefreshToken.Create(user.Id);
+        await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<LoginResponse>.Success(new LoginResponse(accessToken, refreshToken.Token));
     }

@@ -27,7 +27,7 @@ public sealed class RegisterRequestHandler(
         {
             await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                var existingUser = await userManager.FindByEmailAsync(request.Email);
+                var existingUser = await _userManager.FindByEmailAsync(request.Email);
                 if (existingUser is not null)
                     throw new Exception("A user with this email already exists.");
 
@@ -66,7 +66,9 @@ public sealed class RegisterRequestHandler(
 
         var roles = await _userManager.GetRolesAsync(existingUser);
         var accessToken = await _jwtTokenRepository.GenerateTokenAsync(existingUser, roles);
-        var refreshToken = await _refreshTokenRepository.CreateAsync(existingUser.Id, cancellationToken);
+        var refreshToken = Domain.Entities.RefreshToken.Create(existingUser.Id);
+        await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<RegisterResponse>.Success(new RegisterResponse(accessToken, refreshToken.Token));
     }

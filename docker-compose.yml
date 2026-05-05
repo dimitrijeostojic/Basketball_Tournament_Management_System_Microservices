@@ -67,6 +67,7 @@ services:
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
       - Jwt__Issuer=SPQatar2027
       - Jwt__Audience=SPQatar2027
+      - Jwt__ExpirationInMinutes=10
     ports:
       - "5001:8080"
     depends_on:
