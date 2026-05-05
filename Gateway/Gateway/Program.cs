@@ -4,10 +4,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var jwtSection = builder.Configuration.GetSection("Jwt");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var jwtSection = builder.Configuration.GetSection("Jwt");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,

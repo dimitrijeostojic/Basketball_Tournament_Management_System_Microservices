@@ -7,34 +7,37 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using RefreshTokenEntity = Domain.Entities.RefreshToken;
 
-namespace Application.Login;
+namespace Application.TwoFactor.Verify;
 
-public sealed class LoginRequestHandler(
+public sealed class VerifyTwoFactorRequestHandler(
     UserManager<User> userManager,
     IJwtTokenRepository jwtTokenRepository,
     IRefreshTokenRepository refreshTokenRepository,
     IUnitOfWork unitOfWork
     )
-    : IRequestHandler<LoginRequest, Result<LoginResponse>>
+    : IRequestHandler<VerifyTwoFactorRequest, Result<VerifyTwoFactorResponse>>
 {
     private readonly UserManager<User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     private readonly IJwtTokenRepository _jwtTokenRepository = jwtTokenRepository ?? throw new ArgumentNullException(nameof(jwtTokenRepository));
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
-    public async Task<Result<LoginResponse>> Handle(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<Result<VerifyTwoFactorResponse>> Handle(VerifyTwoFactorRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
-        {
-            return Result<LoginResponse>.Failure(ApplicationErrors.InvalidCredentials);
-        }
+        var user = await _userManager.FindByIdAsync(request.UserId);
+        if (user is null)
+            return Result<VerifyTwoFactorResponse>.Failure(ApplicationErrors.NotFound);
 
-        if (user.TwoFactorEnabled)
-        {
-            return Result<LoginResponse>.Success(
-                new LoginResponse(null, null, RequiresTwoFactor: true, UserId: user.Id));
-        }
+        if (!user.TwoFactorEnabled)
+            return Result<VerifyTwoFactorResponse>.Failure(ApplicationErrors.TwoFactorNotEnabled);
+
+        var isValid = await _userManager.VerifyTwoFactorTokenAsync(
+            user,
+            _userManager.Options.Tokens.AuthenticatorTokenProvider,
+            request.Code);
+
+        if (!isValid)
+            return Result<VerifyTwoFactorResponse>.Failure(ApplicationErrors.InvalidTwoFactorCode);
 
         var roles = await _userManager.GetRolesAsync(user);
         var accessToken = await _jwtTokenRepository.GenerateTokenAsync(user, roles);
@@ -42,6 +45,7 @@ public sealed class LoginRequestHandler(
         await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<LoginResponse>.Success(new LoginResponse(accessToken, refreshToken.Token));
+        return Result<VerifyTwoFactorResponse>.Success(
+            new VerifyTwoFactorResponse(accessToken, refreshToken.Token));
     }
 }

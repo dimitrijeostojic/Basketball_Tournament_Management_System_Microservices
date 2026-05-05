@@ -13,4 +13,6 @@ public static class ApplicationErrors
     public static readonly Error InvalidCredentials = new("Auth.InvalidCredentials", "Invalid email or password.");
     public static readonly Error RegistrationFailed = new("Auth.RegistrationFailed", "User registration failed.");
     public static readonly Error InvalidRefreshToken = new("Auth.InvalidRefreshToken", "Refresh token is invalid or has expired.");
+    public static readonly Error InvalidTwoFactorCode = new("Auth.InvalidTwoFactorCode", "The two-factor authentication code is invalid.");
+    public static readonly Error TwoFactorNotEnabled = new("Auth.TwoFactorNotEnabled", "Two-factor authentication is not enabled for this user.");
 }

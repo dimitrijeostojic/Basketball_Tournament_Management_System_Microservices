@@ -62,7 +62,7 @@ services:
       dockerfile: Dockerfile
     container_name: auth-service
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=AuthDB;User Id=sa;Password=DimitrijeIPIS2026;TrustServerCertificate=True
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
       - Jwt__Issuer=SPQatar2027
@@ -89,7 +89,7 @@ services:
       dockerfile: Dockerfile
     container_name: stadium-service
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - MongoDb__ConnectionString=mongodb://mongodb:27017
       - MongoDb__DatabaseName=StadiumDB
       - MongoDb__CollectionName=stadiums
@@ -117,7 +117,7 @@ services:
       dockerfile: Dockerfile
     container_name: team-service
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TeamDB;User Id=sa;Password=DimitrijeIPIS2026;TrustServerCertificate=True
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
       - Jwt__Issuer=SPQatar2027
@@ -148,7 +148,7 @@ services:
       dockerfile: Dockerfile
     container_name: match-service
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=MatchDB;User Id=sa;Password=DimitrijeIPIS2026;TrustServerCertificate=True
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
       - Jwt__Issuer=SPQatar2027
@@ -185,7 +185,7 @@ services:
       dockerfile: Dockerfile
     container_name: gateway
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
       - Jwt__Issuer=SPQatar2027
       - Jwt__Audience=SPQatar2027
