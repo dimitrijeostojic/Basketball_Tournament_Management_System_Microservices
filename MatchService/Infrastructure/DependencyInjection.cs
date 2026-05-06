@@ -21,6 +21,7 @@ public static class DependencyInjection
                 configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IMatchRepository, MatchRepository>();
+        services.AddScoped<IKnockoutBracketRepository, KnockoutBracketRepository>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
         services.AddMassTransit(x =>

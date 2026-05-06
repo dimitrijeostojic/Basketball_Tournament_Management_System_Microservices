@@ -7,6 +7,8 @@ namespace Infrastructure.Data;
 public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IUnitOfWork
 {
     public DbSet<Match> Matches => Set<Match>();
+    public DbSet<KnockoutBracket> KnockoutBrackets => Set<KnockoutBracket>();
+    public DbSet<KnockoutMatch> KnockoutMatches => Set<KnockoutMatch>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +27,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
             entity.Property(e => e.StartTime).IsRequired();
             entity.Property(e => e.Status).IsRequired();
         });
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

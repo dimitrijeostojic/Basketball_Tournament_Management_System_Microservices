@@ -4,11 +4,6 @@ using Core;
 using Domain.Abstraction;
 using Domain.RepositoryInterfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Match.CreateMatch;
 
@@ -30,12 +25,12 @@ public sealed class CreateMatchRequestHandler(
         var awayTeam = await teamServiceClient.GetTeamByPublicIdAsync(request.AwayTeamPublicId, cancellationToken);
 
         if (homeTeam is null || !homeTeam.Exists || awayTeam is null || !awayTeam.Exists)
-            return Result<CreateMatchResponse>.Failure(ApplicationErrors.TeamNotFound);
+            return Result<CreateMatchResponse>.Failure(ApplicationErrors.NotFound);
 
         var stadium = await stadiumServiceClient.GetStadiumByPublicIdAsync(request.StadiumPublicId, cancellationToken);
 
         if (stadium is null || !stadium.Exists)
-            return Result<CreateMatchResponse>.Failure(ApplicationErrors.StadiumNotFound);
+            return Result<CreateMatchResponse>.Failure(ApplicationErrors.NotFound);
 
         var hasTeamConflict = await matchRepository.ExistsTeamConflictAsync(
             request.HomeTeamPublicId,
