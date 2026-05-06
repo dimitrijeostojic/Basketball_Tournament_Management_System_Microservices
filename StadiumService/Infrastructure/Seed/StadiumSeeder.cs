@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace Infrastracture.Seed;
+namespace Infrastructure.Seed;
 
 public sealed class StadiumSeeder(
     IOptions<MongoDbOptions> options,

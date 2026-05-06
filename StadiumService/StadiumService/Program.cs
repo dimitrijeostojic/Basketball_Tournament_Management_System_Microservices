@@ -1,8 +1,8 @@
 using Application;
 using Application.Common.Behaviors;
-using Infrastracture.Seed;
 using Infrastructure;
 using Infrastructure.Options;
+using Infrastructure.Seed;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

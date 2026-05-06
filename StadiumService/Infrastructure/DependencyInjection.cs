@@ -1,6 +1,6 @@
 ﻿using Domain.RepositoryInterfaces;
 using Infrastracture.RepositoryImplementations;
-using Infrastracture.Seed;
+using Infrastructure.Seed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
