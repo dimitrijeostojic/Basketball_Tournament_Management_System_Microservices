@@ -5,7 +5,6 @@ using Domain.Entities;
 using Domain.RepositoryInterfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using RefreshTokenEntity = Domain.Entities.RefreshToken;
 
 namespace Application.Login;
 
@@ -38,7 +37,7 @@ public sealed class LoginRequestHandler(
 
         var roles = await _userManager.GetRolesAsync(user);
         var accessToken = await _jwtTokenRepository.GenerateTokenAsync(user, roles);
-        var refreshToken = RefreshTokenEntity.Create(user.Id);
+        var refreshToken = Domain.Entities.RefreshToken.Create(user.Id);
         await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

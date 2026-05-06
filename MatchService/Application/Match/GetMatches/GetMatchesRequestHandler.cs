@@ -25,6 +25,6 @@ public sealed class GetMatchesRequestHandler(IMatchRepository matchRepository)
             Status = m.Status
         }).ToList();
 
-        return Result<GetMatchesResponse>.Success(new GetMatchesResponse { Matches = dtos });
+        return Result<GetMatchesResponse>.Success(new GetMatchesResponse(dtos));
     }
 }

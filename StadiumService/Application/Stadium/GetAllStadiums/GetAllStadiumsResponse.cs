@@ -1,4 +1,4 @@
-﻿using Application.Common;
+﻿using Application.Common.Collection;
 using Application.Stadium.GetAllStadiums;
 
 namespace Application.Stadium.GetAll;

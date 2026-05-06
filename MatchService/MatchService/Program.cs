@@ -1,12 +1,10 @@
 using Application;
 using Infrastructure;
 using Infrastructure.Options;
-using MatchService.Behaviors;
 using MatchService.Extensions;
 using MatchService.Logging;
 using MatchService.Middleware;
 using MatchService.OptionsSetup;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -17,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
 builder.Services.AddHttpLoggingInterceptor<ErrorHttpLoggingInterceptor>();
 
 builder.Services.AddHttpClients();

@@ -1,12 +1,10 @@
 using Application;
-using AuthService.Behaviors;
 using AuthService.Extensions;
 using AuthService.Logging;
 using AuthService.Middleware;
 using AuthService.OptionsSetup;
 using Infrastructure;
 using Infrastructure.Options;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -41,7 +39,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
 builder.Services.AddHttpLoggingInterceptor<ErrorHttpLoggingInterceptor>();
 
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();

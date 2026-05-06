@@ -1,7 +1,8 @@
 ﻿using Core;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
-namespace MatchService.Behaviors;
+namespace Application.Behaviors;
 
 public sealed class LoggingPipelineBehavior<TRequest, TResponse>(
     ILogger<LoggingPipelineBehavior<TRequest, TResponse>> logger

@@ -1,4 +1,5 @@
 using Application;
+using Application.Common.Behaviors;
 using Infrastracture.Seed;
 using Infrastructure;
 using Infrastructure.Options;
@@ -6,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using StadiumService.Behaviors;
 using StadiumService.Logging;
 using StadiumService.Middleware;
 using StadiumService.OptionsSetup;

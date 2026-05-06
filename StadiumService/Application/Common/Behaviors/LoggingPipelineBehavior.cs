@@ -1,7 +1,8 @@
 ﻿using Core;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
-namespace AuthService.Behaviors;
+namespace Application.Common.Behaviors;
 
 public sealed class LoggingPipelineBehavior<TRequest, TResponse>(
     ILogger<LoggingPipelineBehavior<TRequest, TResponse>> logger
