@@ -24,7 +24,7 @@ public class GroupController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{groupPublicId:guid}/standings")]
-    public async Task<IActionResult> GetStandings(Guid groupPublicId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetStandings([FromRoute] Guid groupPublicId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetGroupStandingsRequest { GroupPublicId = groupPublicId }, cancellationToken);
         return result.ToActionResult();

@@ -21,7 +21,7 @@ public sealed class GroupRepository(ApplicationDbContext context)
     }
 
     public async Task<List<Group>> GetAllAsync(CancellationToken cancellationToken = default)
-        => await _context.Groups.ToListAsync(cancellationToken);
+        => await _context.Groups.Include(x => x.Teams).ToListAsync(cancellationToken);
 
     public async Task<Group?> GetByPublicIdAsync(Guid publicId, CancellationToken cancellationToken = default)
     {
