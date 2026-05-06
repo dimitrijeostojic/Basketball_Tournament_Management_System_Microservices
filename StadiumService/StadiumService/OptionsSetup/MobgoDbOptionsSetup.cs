@@ -6,10 +6,10 @@ namespace StadiumService.OptionsSetup;
 public sealed class MobgoDbOptionsSetup(IConfiguration configuration) : IConfigureOptions<MongoDbOptions>
 {
     private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-    private const string SectionName = "MongoDb";
+    private const string _sectionName = "MongoDb";
 
     public void Configure(MongoDbOptions options)
     {
-        _configuration.GetSection(SectionName).Bind(options);
+        _configuration.GetSection(_sectionName).Bind(options);
     }
 }
