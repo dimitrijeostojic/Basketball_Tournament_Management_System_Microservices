@@ -11,6 +11,7 @@ public static class ApplicationErrors
 {
     public static readonly Error NotFound = new("Auth.NotFound", "The requested resource was not found.");
     public static readonly Error InvalidCredentials = new("Auth.InvalidCredentials", "Invalid email or password.");
+    public static readonly Error EmailAlreadyExists = new("Auth.EmailAlreadyExists", "A user with this email already exists.");
     public static readonly Error RegistrationFailed = new("Auth.RegistrationFailed", "User registration failed.");
     public static readonly Error InvalidRefreshToken = new("Auth.InvalidRefreshToken", "Refresh token is invalid or has expired.");
     public static readonly Error InvalidTwoFactorCode = new("Auth.InvalidTwoFactorCode", "The two-factor authentication code is invalid.");
