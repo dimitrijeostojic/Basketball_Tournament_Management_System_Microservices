@@ -11,7 +11,7 @@ services:
     volumes:
       - sqlserver_data:/var/opt/mssql
     networks:
-      - spqatar-network
+      - tournament-network
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P DimitrijeIPIS2026 -Q 'SELECT 1' -No"]
       interval: 10s
@@ -27,7 +27,7 @@ services:
     volumes:
       - mongodb_data:/data/db
     networks:
-      - spqatar-network
+      - tournament-network
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -48,7 +48,7 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - spqatar-network
+      - tournament-network
     healthcheck:
       test: ["CMD-SHELL", "rabbitmq-diagnostics check_port_connectivity"]
       interval: 10s
@@ -65,8 +65,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=AuthDB;User Id=sa;Password=DimitrijeIPIS2026;TrustServerCertificate=True
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
-      - Jwt__Issuer=SPQatar2027
-      - Jwt__Audience=SPQatar2027
+      - Jwt__Issuer=TournamentPlatform
+      - Jwt__Audience=TournamentPlatform
       - Jwt__ExpirationInMinutes=10
     ports:
       - "5001:8080"
@@ -74,7 +74,7 @@ services:
       sqlserver:
         condition: service_healthy
     networks:
-      - spqatar-network
+      - tournament-network
     restart: on-failure
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8080' 2>/dev/null && echo healthy || exit 1"]
@@ -94,15 +94,15 @@ services:
       - MongoDb__DatabaseName=StadiumDB
       - MongoDb__CollectionName=stadiums
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
-      - Jwt__Issuer=SPQatar2027
-      - Jwt__Audience=SPQatar2027
+      - Jwt__Issuer=TournamentPlatform
+      - Jwt__Audience=TournamentPlatform
     ports:
       - "5004:8080"
     depends_on:
       mongodb:
         condition: service_healthy
     networks:
-      - spqatar-network
+      - tournament-network
     restart: on-failure
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8080' 2>/dev/null && echo healthy || exit 1"]
@@ -120,8 +120,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TeamDB;User Id=sa;Password=DimitrijeIPIS2026;TrustServerCertificate=True
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
-      - Jwt__Issuer=SPQatar2027
-      - Jwt__Audience=SPQatar2027
+      - Jwt__Issuer=TournamentPlatform
+      - Jwt__Audience=TournamentPlatform
       - RabbitMq__Host=rabbitmq
       - RabbitMq__Username=guest
       - RabbitMq__Password=guest
@@ -133,7 +133,7 @@ services:
       rabbitmq:
         condition: service_healthy
     networks:
-      - spqatar-network
+      - tournament-network
     restart: on-failure
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8080' 2>/dev/null && echo healthy || exit 1"]
@@ -151,8 +151,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=MatchDB;User Id=sa;Password=DimitrijeIPIS2026;TrustServerCertificate=True
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
-      - Jwt__Issuer=SPQatar2027
-      - Jwt__Audience=SPQatar2027
+      - Jwt__Issuer=TournamentPlatform
+      - Jwt__Audience=TournamentPlatform
       - RabbitMq__Host=rabbitmq
       - RabbitMq__Username=guest
       - RabbitMq__Password=guest
@@ -170,7 +170,7 @@ services:
       stadium-service:
         condition: service_healthy
     networks:
-      - spqatar-network
+      - tournament-network
     restart: on-failure
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8080' 2>/dev/null && echo healthy || exit 1"]
@@ -187,8 +187,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - Jwt__SecretKey=KG+8eq3WYLLKv26GTW5S+q6BQvaPefH/yMmMNwCYMzo=
-      - Jwt__Issuer=SPQatar2027
-      - Jwt__Audience=SPQatar2027
+      - Jwt__Issuer=TournamentPlatform
+      - Jwt__Audience=TournamentPlatform
       - ReverseProxy__Clusters__auth-cluster__Destinations__auth-destination__Address=http://auth-service:8080/
       - ReverseProxy__Clusters__team-cluster__Destinations__team-destination__Address=http://team-service:8080/
       - ReverseProxy__Clusters__match-cluster__Destinations__match-destination__Address=http://match-service:8080/
@@ -205,7 +205,7 @@ services:
       stadium-service:
         condition: service_healthy
     networks:
-      - spqatar-network
+      - tournament-network
     restart: on-failure
 
 volumes:
@@ -214,5 +214,5 @@ volumes:
   rabbitmq_data:
 
 networks:
-  spqatar-network:
+  tournament-network:
     driver: bridge

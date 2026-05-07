@@ -12,7 +12,7 @@ public sealed class SetupTwoFactorRequestHandler(
     )
     : IRequestHandler<SetupTwoFactorRequest, Result<SetupTwoFactorResponse>>
 {
-    private const string Issuer = "SPQatar2027";
+    private const string Issuer = "TournamentPlatform";
 
     private readonly UserManager<User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 
