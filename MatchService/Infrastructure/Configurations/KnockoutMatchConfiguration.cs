@@ -24,6 +24,9 @@ public sealed class KnockoutMatchConfiguration : IEntityTypeConfiguration<Knocko
         builder.Property(x => x.AwayPoints);
         builder.Property(x => x.WinnerPublicId);
 
+        builder.Property(x => x.StadiumPublicId);
+        builder.Property(x => x.ScheduledAt);
+
         builder.Property(x => x.Round).IsRequired();
         builder.Property(x => x.MatchOrder).IsRequired();
         builder.Property(x => x.Status).IsRequired();

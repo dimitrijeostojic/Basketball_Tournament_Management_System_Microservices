@@ -24,7 +24,6 @@ public sealed class CreateKnockoutBracketRequestHandler(
         if (request.SeededTeamPublicIds.Distinct().Count() != 8)
             return Result<CreateKnockoutBracketResponse>.Failure(ApplicationErrors.DuplicateSeededTeams);
 
-        // Dohvati nazive svih timova iz TeamService
         var seededTeams = new List<(Guid PublicId, string Name)>();
 
         foreach (var teamPublicId in request.SeededTeamPublicIds)

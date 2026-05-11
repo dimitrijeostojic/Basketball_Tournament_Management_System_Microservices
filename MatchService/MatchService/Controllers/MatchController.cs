@@ -1,6 +1,7 @@
 ﻿using Application.Knockout.CreateKnockoutBracket;
 using Application.Knockout.GetKnockoutBracket;
 using Application.Knockout.RecordKnockoutResult;
+using Application.Knockout.ScheduleKnockoutMatch;
 using Application.Match.CreateMatch;
 using Application.Match.ForfeitMatch;
 using Application.Match.GetMatchByPublicId;
@@ -85,6 +86,15 @@ public class MatchController(IMediator mediator) : ControllerBase
     [HttpPost("knockout/brackets")]
     public async Task<IActionResult> CreateKnockoutBracket([FromBody] CreateKnockoutBracketRequest request, CancellationToken cancellationToken)
     {
+        var result = await _mediator.Send(request, cancellationToken);
+        return result.ToActionResult();
+    }
+
+    [Authorize(Roles = Roles.Admin)]
+    [HttpPost("knockout/{matchPublicId}/schedule")]
+    public async Task<IActionResult> ScheduleKnockoutMatch([FromRoute] Guid matchPublicId, [FromBody] ScheduleKnockoutMatchRequest request, CancellationToken cancellationToken)
+    {
+        request.MatchPublicId = matchPublicId;
         var result = await _mediator.Send(request, cancellationToken);
         return result.ToActionResult();
     }

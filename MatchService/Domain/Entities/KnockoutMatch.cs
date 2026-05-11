@@ -15,8 +15,8 @@ public sealed class KnockoutMatch : Entity
     public int MatchOrder { get; private set; }
     public KnockoutMatchStatus Status { get; private set; }
     public Guid? WinnerPublicId { get; private set; }
-
-    // Navigation property — KnockoutBracket je u istom servisu (FK je BracketId → KnockoutBracket.Id)
+    public Guid? StadiumPublicId { get; private set; }
+    public DateTime? ScheduledAt { get; private set; }
     public KnockoutBracket? Bracket { get; private set; }
 
 
@@ -62,6 +62,15 @@ public sealed class KnockoutMatch : Entity
         AwayTeamName = awayTeamName;
         if (HomeTeamPublicId.HasValue)
             Status = KnockoutMatchStatus.Scheduled;
+    }
+
+    public void Schedule(DateTime scheduledAt, Guid? stadiumPublicId)
+    {
+        if (Status == KnockoutMatchStatus.Completed)
+            throw new InvalidOperationException("Cannot schedule a completed match.");
+
+        ScheduledAt = scheduledAt;
+        StadiumPublicId = stadiumPublicId;
     }
 
     public void RecordResult(int homePoints, int awayPoints)

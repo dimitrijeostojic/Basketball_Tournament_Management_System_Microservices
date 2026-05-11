@@ -34,6 +34,8 @@ public sealed class GetKnockoutBracketRequestHandler(IKnockoutBracketRepository 
                 HomePoints = m.HomePoints,
                 AwayPoints = m.AwayPoints,
                 WinnerPublicId = m.WinnerPublicId,
+                StadiumPublicId = m.StadiumPublicId,
+                ScheduledAt = m.ScheduledAt,
                 Status = m.Status
             })
             .ToList();
