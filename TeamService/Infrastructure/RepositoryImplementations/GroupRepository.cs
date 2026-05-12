@@ -28,6 +28,6 @@ public sealed class GroupRepository(ApplicationDbContext context)
 
     public async Task<Group?> GetByPublicIdAsync(Guid publicId, CancellationToken cancellationToken = default)
     {
-        return await _context.Groups.FirstOrDefaultAsync(g => g.PublicId == publicId, cancellationToken);
+        return await _context.Groups.Include(g => g.Teams).FirstOrDefaultAsync(g => g.PublicId == publicId, cancellationToken);
     }
 }

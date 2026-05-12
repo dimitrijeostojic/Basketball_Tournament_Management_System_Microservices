@@ -33,6 +33,12 @@ public sealed class TeamRepository(ApplicationDbContext context)
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<Team?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+    {
+        return await context.Teams
+         .FirstOrDefaultAsync(t => t.TeamName == name, cancellationToken);
+    }
+
     public async Task<Team?> GetByPublicIdAsync(Guid publicId, CancellationToken cancellationToken = default)
     {
         return await context.Teams
