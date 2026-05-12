@@ -3,10 +3,12 @@ using Application.Knockout.GetKnockoutBracket;
 using Application.Knockout.RecordKnockoutResult;
 using Application.Knockout.ScheduleKnockoutMatch;
 using Application.Match.CreateMatch;
+using Application.Match.DeleteMatch;
 using Application.Match.ForfeitMatch;
 using Application.Match.GetMatchByPublicId;
 using Application.Match.GetMatches;
 using Application.Match.RecordMatchResult;
+using Application.Match.UpdateMatch;
 using Core;
 using MatchService.Extensions;
 using MediatR;
@@ -60,6 +62,22 @@ public class MatchController(IMediator mediator) : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] GetMatchesRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(request, cancellationToken);
+        return result.ToActionResult();
+    }
+
+    [Authorize(Roles = $"{Roles.Admin},{Roles.Manager}")]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteMatch([FromBody] DeleteMatchRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(request, cancellationToken);
+        return result.ToActionResult();
+    }
+
+    [Authorize(Roles = $"{Roles.Admin},{Roles.Manager}")]
+    [HttpPut]
+    public async Task<IActionResult> UpdateMatch([FromBody] UpdateMatchRequest request, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(request, cancellationToken);
         return result.ToActionResult();

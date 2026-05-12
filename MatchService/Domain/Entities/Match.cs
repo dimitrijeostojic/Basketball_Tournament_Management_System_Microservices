@@ -1,9 +1,4 @@
 ﻿using Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities;
 
@@ -22,10 +17,62 @@ public sealed class Match : Entity
     public bool IsForfeit { get; private set; }
     public ForfeitSide? ForfeitLoser { get; private set; }
 
-    private const int ForfeitWinnerPoints = 20;
-    private const int ForfeitLoserPoints = 0;
-    private const int WinStandingPoints = 2;
-    private const int LossStandingPoints = 1;
+    private const int _forfeitWinnerPoints = 20;
+    private const int _forfeitLoserPoints = 0;
+    private const int _winStandingPoints = 2;
+    private const int _lossStandingPoints = 1;
+
+
+    public Match UpdateStartTime(DateTime? startTime)
+    {
+        EnsureNotFinishedOrCancelled();
+        if (startTime != null)
+        {
+            StartTime = startTime.Value;
+        }
+        return this;
+    }
+
+    public Match UpdateHomeTeam(Guid? homeTeamPublicId, string? homeTeamName)
+    {
+        EnsureNotFinishedOrCancelled();
+        if (homeTeamPublicId != null)
+        {
+            HomeTeamPublicId = homeTeamPublicId.Value;
+        }
+        if (homeTeamName != null)
+        {
+            HomeTeamName = homeTeamName;
+        }
+        return this;
+    }
+    public Match UpdateAwayTeam(Guid? awayTeamPublicId, string? awayTeamName)
+    {
+        EnsureNotFinishedOrCancelled();
+        if (awayTeamPublicId != null)
+        {
+            AwayTeamPublicId = awayTeamPublicId.Value;
+        }
+        if (awayTeamName != null)
+        {
+            AwayTeamName = awayTeamName;
+        }
+        return this;
+    }
+
+    public Match UpdateStadium(Guid? stadiumPublicId, string? stadiumName)
+    {
+        EnsureNotFinishedOrCancelled();
+        if (stadiumPublicId != null)
+        {
+            StadiumPublicId = stadiumPublicId.Value;
+        }
+        if (stadiumName != null)
+        {
+            StadiumName = stadiumName;
+        }
+        return this;
+    }
 
     public static Match Schedule(
         Guid homeTeamPublicId,
@@ -87,13 +134,13 @@ public sealed class Match : Entity
 
         if (loserSide == ForfeitSide.Home)
         {
-            HomePoints = ForfeitLoserPoints;
-            AwayPoints = ForfeitWinnerPoints;
+            HomePoints = _forfeitLoserPoints;
+            AwayPoints = _forfeitWinnerPoints;
         }
         else
         {
-            HomePoints = ForfeitWinnerPoints;
-            AwayPoints = ForfeitLoserPoints;
+            HomePoints = _forfeitWinnerPoints;
+            AwayPoints = _forfeitLoserPoints;
         }
 
         Status = MatchStatus.Completed;
@@ -123,13 +170,13 @@ public sealed class Match : Entity
             HomeLosses: homeWin ? 0 : 1,
             HomePointsFor: homeFor,
             HomePointsAgainst: homeAgainst,
-            HomeStandingPoints: homeWin ? WinStandingPoints : LossStandingPoints,
+            HomeStandingPoints: homeWin ? _winStandingPoints : _lossStandingPoints,
             AwayPlayed: 1,
             AwayWins: awayWin ? 1 : 0,
             AwayLosses: awayWin ? 0 : 1,
             AwayPointsFor: awayFor,
             AwayPointsAgainst: awayAgainst,
-            AwayStandingPoints: awayWin ? WinStandingPoints : LossStandingPoints
+            AwayStandingPoints: awayWin ? _winStandingPoints : _lossStandingPoints
         );
     }
 

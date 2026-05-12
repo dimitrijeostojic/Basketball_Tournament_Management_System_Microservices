@@ -10,4 +10,5 @@ public interface IMatchRepository
     Task<bool> ExistsStadiumConflictAsync(Guid stadiumPublicId, DateTime startTime, CancellationToken cancellationToken = default);
     Task<bool> ExistsSameMatchAsync(Guid homeTeamPublicId, Guid awayTeamPublicId, CancellationToken cancellationToken = default);
     Task AddAsync(Match match, CancellationToken cancellationToken = default);
+    void Delete(Match match, CancellationToken cancellationToken = default);
 }

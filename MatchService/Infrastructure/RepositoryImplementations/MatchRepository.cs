@@ -36,5 +36,8 @@ public sealed class MatchRepository(ApplicationDbContext context) : IMatchReposi
 
     public async Task AddAsync(Match match, CancellationToken cancellationToken = default)
        => await _context.Matches.AddAsync(match, cancellationToken);
+
+    public void Delete(Match match, CancellationToken cancellationToken = default)
+    => _context.Matches.Remove(match);
 }
 
