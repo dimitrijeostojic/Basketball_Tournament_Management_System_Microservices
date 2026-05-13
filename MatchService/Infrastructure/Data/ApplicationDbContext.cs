@@ -8,6 +8,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 {
     public DbSet<Match> Matches => Set<Match>();
     public DbSet<KnockoutBracket> KnockoutBrackets => Set<KnockoutBracket>();
+    public DbSet<KnockoutMatch> KnockoutMatches => Set<KnockoutMatch>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
