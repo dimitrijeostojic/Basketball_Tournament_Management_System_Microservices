@@ -22,7 +22,7 @@ public static class DependencyInjection
 
         services.AddIdentityCore<User>() //konfiguracija identity servisa
            .AddRoles<IdentityRole>() //dodavanje podrske za role
-         //.AddTokenProvider<DataProtectorTokenProvider<User>>("") //dodavanje token provajdera
+                                     //.AddTokenProvider<DataProtectorTokenProvider<User>>("") //dodavanje token provajdera
            .AddEntityFrameworkStores<AuthDbContext>() //podesavanje entity framework skladista
            .AddDefaultTokenProviders(); //dodavanje podrazumevanih token provajdera
 

@@ -1,17 +1,16 @@
 using Application.Common;
 using Core;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.TwoFactor.Confirm;
 
 public sealed class ConfirmTwoFactorRequestHandler(
-    UserManager<User> userManager
+    UserManager<Domain.Entities.User> userManager
     )
     : IRequestHandler<ConfirmTwoFactorRequest, Result<ConfirmTwoFactorResponse>>
 {
-    private readonly UserManager<User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+    private readonly UserManager<Domain.Entities.User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 
     public async Task<Result<ConfirmTwoFactorResponse>> Handle(ConfirmTwoFactorRequest request, CancellationToken cancellationToken)
     {

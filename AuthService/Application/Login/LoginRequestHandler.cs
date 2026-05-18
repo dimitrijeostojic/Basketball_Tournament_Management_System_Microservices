@@ -1,7 +1,6 @@
 using Application.Common;
 using Core;
 using Domain.Abstraction;
-using Domain.Entities;
 using Domain.RepositoryInterfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -9,14 +8,14 @@ using Microsoft.AspNetCore.Identity;
 namespace Application.Login;
 
 public sealed class LoginRequestHandler(
-    UserManager<User> userManager,
+    UserManager<Domain.Entities.User> userManager,
     IJwtTokenRepository jwtTokenRepository,
     IRefreshTokenRepository refreshTokenRepository,
     IUnitOfWork unitOfWork
     )
     : IRequestHandler<LoginRequest, Result<LoginResponse>>
 {
-    private readonly UserManager<User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+    private readonly UserManager<Domain.Entities.User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     private readonly IJwtTokenRepository _jwtTokenRepository = jwtTokenRepository ?? throw new ArgumentNullException(nameof(jwtTokenRepository));
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));

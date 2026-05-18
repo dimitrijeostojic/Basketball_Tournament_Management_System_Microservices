@@ -1,6 +1,5 @@
 using Application.Common;
 using Core;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using QRCoder;
@@ -8,13 +7,13 @@ using QRCoder;
 namespace Application.TwoFactor.Setup;
 
 public sealed class SetupTwoFactorRequestHandler(
-    UserManager<User> userManager
+    UserManager<Domain.Entities.User> userManager
     )
     : IRequestHandler<SetupTwoFactorRequest, Result<SetupTwoFactorResponse>>
 {
     private const string Issuer = "TournamentPlatform";
 
-    private readonly UserManager<User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+    private readonly UserManager<Domain.Entities.User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 
     public async Task<Result<SetupTwoFactorResponse>> Handle(SetupTwoFactorRequest request, CancellationToken cancellationToken)
     {

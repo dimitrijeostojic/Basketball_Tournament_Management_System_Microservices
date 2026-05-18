@@ -1,15 +1,14 @@
 using Application.Common;
 using Core;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Registration;
 
-public sealed class RegisterRequestHandler(UserManager<User> userManager)
+public sealed class RegisterRequestHandler(UserManager<Domain.Entities.User> userManager)
     : IRequestHandler<RegisterRequest, Result<RegisterResponse>>
 {
-    private readonly UserManager<User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+    private readonly UserManager<Domain.Entities.User> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 
     public async Task<Result<RegisterResponse>> Handle(RegisterRequest request, CancellationToken cancellationToken)
     {
@@ -17,7 +16,7 @@ public sealed class RegisterRequestHandler(UserManager<User> userManager)
         if (existingUser is not null)
             return Result<RegisterResponse>.Failure(ApplicationErrors.EmailAlreadyExists);
 
-        var user = new User
+        var user = new Domain.Entities.User
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
