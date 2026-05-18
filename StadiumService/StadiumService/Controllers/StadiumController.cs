@@ -1,6 +1,9 @@
 using Application.Stadium.CheckAvailability;
+using Application.Stadium.Create;
+using Application.Stadium.Delete;
 using Application.Stadium.GetAll;
 using Application.Stadium.GetByPublicId;
+using Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +28,21 @@ public class StadiumController : ControllerBase
     public async Task<IActionResult> GetAllStadiums(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllStadiumsRequest(), cancellationToken);
+        return result.ToActionResult();
+    }
+    [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> CreateStadium([FromBody] CreateStadiumRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(request, cancellationToken);
+        return result.ToActionResult();
+    }
+
+    [HttpDelete("{publicId:guid}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> DeleteStadium(Guid publicId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new DeleteStadiumRequest(publicId), cancellationToken);
         return result.ToActionResult();
     }
 

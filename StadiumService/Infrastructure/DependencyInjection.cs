@@ -1,8 +1,8 @@
+using Domain.Abstractions;
 using Domain.RepositoryInterfaces;
 using Infrastructure.Data;
 using Infrastructure.Options;
 using Infrastructure.RepositoryImplementations;
-using Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +20,7 @@ public static class DependencyInjection
             options.UseMongoDB(mongoOptions.ConnectionString, mongoOptions.DatabaseName);
         });
         services.AddScoped<IStadiumRepository, StadiumRepository>();
-        services.AddScoped<StadiumSeeder>();
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<MongoDbContext>());
         return services;
     }
 }

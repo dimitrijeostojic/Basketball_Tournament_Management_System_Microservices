@@ -1,7 +1,6 @@
 using Application;
 using Infrastructure;
 using Infrastructure.Options;
-using Infrastructure.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -80,12 +79,6 @@ builder.Services.AddHealthChecks()
         tags: ["db", "mongo"]);
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var seeder = scope.ServiceProvider.GetRequiredService<StadiumSeeder>();
-    await seeder.SeedAsync();
-}
 
 app.UseSwagger();
 app.UseSwaggerUI();

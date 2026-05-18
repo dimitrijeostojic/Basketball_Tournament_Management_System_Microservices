@@ -26,6 +26,7 @@ public class Stadium
     {
         return new Stadium
         {
+            Id = ObjectId.GenerateNewId().ToString(),
             StadiumName = stadiumName,
             City = city,
             Capacity = capacity

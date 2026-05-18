@@ -4,8 +4,10 @@ using System.Text.Json;
 
 namespace StadiumService.Middleware;
 
-public sealed class GlobalExceptionHandlingMiddleware : IMiddleware
+public sealed class GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMiddleware> logger) : IMiddleware
 {
+    private readonly ILogger<GlobalExceptionHandlingMiddleware> _logger = logger;
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
@@ -28,8 +30,9 @@ public sealed class GlobalExceptionHandlingMiddleware : IMiddleware
                 errors
             }));
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Unhandled exception: {Message}", ex.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = "application/json";
 
@@ -37,8 +40,8 @@ public sealed class GlobalExceptionHandlingMiddleware : IMiddleware
             {
                 Status = context.Response.StatusCode,
                 Type = "Server error",
-                Title = "Server error",
-                Detail = "An internal server has occured"
+                Title = ex.GetType().Name,
+                Detail = ex.Message + " | " + ex.InnerException?.Message
             };
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
